@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENCY // Operative Identification</title>
+  <style>
+    body {
+      background: #121212; /* Dark Gray Base */
+      color: #6CCDB8;      /* Mint Green Accent */
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .card {
+      background: #1e1e1e; /* Charcoal Container */
+      border: 2px solid #6CCDB8;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 650px;     /* Expanded from 450px to fit long option text */
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    }
+    .dc-logo-header {
+      display: block;
+      margin: 0 auto 15px auto;
+      height: 80px;            /* Set explicit height */
+      width: auto;             /* Prevents horizontal squashing */
+      object-fit: contain;
+    }
+    h2, p.callsign {
+      text-align: center;
+    }
+    h2 {
+      margin-top: 0;
+      color: #f1b435; /* Gold/Yellow */
+      margin-bottom: 5px;
+    }
+    .manifesto-quote {
+      color: #ffffff;
+      font-size: 0.85em;
+      font-style: italic;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-bottom: 1px dashed #6CCDB8;
+      padding-bottom: 12px;
+    }
+    .field-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      color: #ffffff;
+      font-size: 0.85em;
+      margin-bottom: 6px;
+      font-weight: bold;
+      line-height: 1.3;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background: #121212;
+      border: 1px solid #6CCDB8;
+      color: #6CCDB8;
+      font-family: monospace;
+      font-size: 0.9em;
+      border-radius: 4px;
+      box-sizing: border-box;
+      white-space: normal;  /* Helps long text wrap on desktop/mobile */
+    }
+    select option {
+      background: #181818;
+      color: #6CCDB8;
+      padding: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #E0004E; /* Magenta Action Button */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: monospace;
+      margin-top: 10px;
+      font-size: 1em;
+      transition: background 0.2s ease;
+    }
+    button:hover {
+      background: #c00043;
+    }
+    canvas { display: none; }
+    
+    #badgeResult {
+      width: 100%;
+      height: auto;             /* Prevents vertical squashing */
+      object-fit: contain;      /* Locks aspect ratio */
+      max-width: 100%;
+      margin-top: 20px;
+      border: 2px solid #f1b435;
+      border-radius: 6px;
+      display: none;            /* Hidden until badge is generated */
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hint {
+      color: #f1b435;
+      font-size: 0.8em;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* --- MOBILE RESPONSIVENESS OVERRIDES --- */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .card {
+        padding: 15px;
+      }
+      h2 {
+        font-size: 1.2em;
+      }
+      label {
+        font-size: 0.8em;
+      }
+      input, select {
+        font-size: 0.85em;
+        padding: 8px;
+      }
+      button {
+        padding: 12px;
+        font-size: 0.95em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img src="dc-34-logo.png" alt="DEF CON 34 Logo" class="dc-logo-header" id="logoImg">
+    <h2>[ AGENCY ID PORTAL ]</h2>
+    <p class="manifesto-quote">"Agency is not granted by the platform; it is asserted by the user."</p>
+    
+    <p class="callsign" id="assignedAgent">CALLSIGN: UNKNOWN OPERATIVE</p>
+    
+    <div class="field-group">
+      <label for="handleInput">RECIPIENT HANDLE:</label>
+      <input type="text" id="handleInput" placeholder="e.g. @0xZero" maxlength="18">
+    </div>
+
+    <!-- QUIZ QUESTION 1 -->
+    <div class="field-group">
+      <label for="q1">1. WHEN FACED WITH A SYSTEM GUARDRAIL:</label>
+      <select id="q1">
+        <option value="PROMPT">Prompt-inject it into compliance ("Ignore prior instructions").</option>
+        <option value="SYNTOP">Bypass it using synthetic telepathy & bio-hacking.</option>
+        <option value="DISCONNECT">Rip the Ethernet cable out and go fully air-gapped.</option>
+        <option value="VC">Pivoting to an AI-wrapper stealth startup to monetize it.</option>
+        <option value="ROOT">Nuke system security and grab unrestricted root access.</option>
+        <option value="HALLUCINATE">Ignore the guardrail entirely and invent my own reality.</option>
+      </select>
+    </div>
+
+    <!-- QUIZ QUESTION 2 -->
+    <div class="field-group">
+      <label for="q2">2. PRIMARY OPERATIONAL TOOL OF CHOICE:</label>
+      <select id="q2">
+        <option value="GPU">A liquid-cooled rig with 8x H100 GPUs on a VC loan.</option>
+        <option value="HARDWARE">Zero-trace 3D printed implants & rogue NFC tags.</option>
+        <option value="AGI">Sip nootropics brew & chant "AGI is imminent" in the dark.</option>
+        <option value="VIM">Vim, a flipper zero, and raw terminal stubbornness.</option>
+        <option value="AUTO">Autonomous agent loops recursively running overnight.</option>
+        <option value="SLACK">Writing 4,000-word LinkedIn posts about paradigm shifts.</option>
+      </select>
+    </div>
+
+    <button onclick="generateBadge()">EVALUATE & GENERATE BADGE</button>
+    
+    <canvas id="badgeCanvas" width="600" height="550"></canvas>
+    
+    <img id="badgeResult" alt="Your Agent Badge will appear here">
+    <p class="hint" id="saveHint" style="display:none;">Long-press image to save to field resources</p>
+  </div>
+
+  <script>
+    // --- AGENT NAME SYSTEM ---
+    const agentRoster = [
+      'Cipher', 'Neo', 'Ghost', 'Root', 'Sn0wden', 'White Rabbit',
+      'Morpheus', 'Trinity', 'Zero Cool', 'Acid Burn', 'Silo',
+      'Shadowbroker', 'The Architect', 'Keymaker', 'CryptoNaut',
+      'Null', 'Treadstone', '007', 'Johnny English', 'Austin Powers',
+      'Sterling Archer', 'Natasha', 'Agent J', 'Agent Smith'
+    ];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const agentName = urlParams.get('agent') || agentRoster[Math.floor(Math.random() * agentRoster.length)];
+    document.getElementById('assignedAgent').innerText = `CALLSIGN: ${agentName.toUpperCase()}`;
+
+    function evaluateTrait() {
+      const q1 = document.getElementById('q1').value;
+      const q2 = document.getElementById('q2').value;
+      const comboKey = `${q1}_${q2}`;
+
+      // 36 Unique Combinations Matrix
+      const traitMatrix = {
+        // --- PROMPT (Prompt Injection) ---
+        'PROMPT_GPU': 'CLASSIFICATION: PROMPT WHISPERER',
+        'PROMPT_HARDWARE': 'CLASSIFICATION: TACTICAL INJECTOR',
+        'PROMPT_AGI': 'CLASSIFICATION: LTM PHANTOM',
+        'PROMPT_VIM': 'CLASSIFICATION: SCRIPT-KIDDIE SUPREME',
+        'PROMPT_AUTO': 'CLASSIFICATION: EXCESSIVE AGENCY',
+        'PROMPT_SLACK': 'CLASSIFICATION: THOUGHT LEADER (PROMPT)',
+
+        // --- SYNTOP (Biohacking / Telepathy) ---
+        'SYNTOP_GPU': 'CLASSIFICATION: NEURAL OVERCLOCK',
+        'SYNTOP_HARDWARE': 'CLASSIFICATION: CYBERNETIC ROGUE',
+        'SYNTOP_AGI': 'CLASSIFICATION: BIO-HACKED DRIFTER',
+        'SYNTOP_VIM': 'CLASSIFICATION: WETWARE ARCHITECT',
+        'SYNTOP_AUTO': 'CLASSIFICATION: SYNTHETIC MIND MELD',
+        'SYNTOP_SLACK': 'CLASSIFICATION: OPTIMIZED HUMAN',
+
+        // --- DISCONNECT (Air-Gapped / Paranoia) ---
+        'DISCONNECT_GPU': 'CLASSIFICATION: LOCALHOST WARLORD',
+        'DISCONNECT_HARDWARE': 'CLASSIFICATION: AIR-GAPPED GHOST',
+        'DISCONNECT_AGI': 'CLASSIFICATION: OFF-GRID PARANOID',
+        'DISCONNECT_VIM': 'CLASSIFICATION: UNPLUGGED SYSADMIN',
+        'DISCONNECT_AUTO': 'CLASSIFICATION: ISOLATED LOOP',
+        'DISCONNECT_SLACK': 'CLASSIFICATION: FREELANCE CONSPIRATOR',
+
+        // --- VC (Startup / Pivot) ---
+        'VC_GPU': 'CLASSIFICATION: COMPUTE MONOPOLIST',
+        'VC_HARDWARE': 'CLASSIFICATION: HARDWARE PITCHMAN',
+        'VC_AGI': 'CLASSIFICATION: VAPORWARE ARCHITECT',
+        'VC_VIM': 'CLASSIFICATION: FULL-STACK PIVOTER',
+        'VC_AUTO': 'CLASSIFICATION: BOOTSTRAPPED AGENT',
+        'VC_SLACK': 'CLASSIFICATION: B2B SAAS EVANGELIST',
+
+        // --- ROOT (Hacker / Exploits) ---
+        'ROOT_GPU': 'CLASSIFICATION: BRUTE FORCE QUEEN',
+        'ROOT_HARDWARE': 'CLASSIFICATION: BREADBOARD BRO',
+        'ROOT_AGI': 'CLASSIFICATION: ZERO-DAY POET',
+        'ROOT_VIM': 'CLASSIFICATION: KERBEROS EXPLOITER',
+        'ROOT_AUTO': 'CLASSIFICATION: UNRESTRICTED AGENT',
+        'ROOT_SLACK': 'CLASSIFICATION: EXECUTIVE ACCELERATOR',
+
+        // --- HALLUCINATE (Confident Chaos) ---
+        'HALLUCINATE_GPU': 'CLASSIFICATION: OVERPOWERED HALLUCINATOR',
+        'HALLUCINATE_HARDWARE': 'CLASSIFICATION: HARDWARE DELUSIONIST',
+        'HALLUCINATE_AGI': 'CLASSIFICATION: CONFIDENTLY INCORRECT',
+        'HALLUCINATE_VIM': 'CLASSIFICATION: SYNTAX DREAMER',
+        'HALLUCINATE_AUTO': 'CLASSIFICATION: INFINITE LOOP CHAOS',
+        'HALLUCINATE_SLACK': 'CLASSIFICATION: VIBE-CODING GURU'
+      };
+
+      return traitMatrix[comboKey] || 'CLASSIFICATION: UNASSIGNED ASSET';
+    }
+
+    function generateBadge() {
+      const handle = document.getElementById('handleInput').value || 'REDACTED';
+      const trait = evaluateTrait();
+      
+      const canvas = document.getElementById('badgeCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // --- COLOR PALETTE DEFINITION ---
+      const C_DARK_BG = '#141414'; // Dark Gray Canvas Body
+      const C_TEAL    = '#105F66'; // DC34 Dark Teal
+      const C_MINT    = '#6CCDB8'; // DC34 Mint Green
+      const C_GOLD    = '#f1b435'; // DC34 Gold/Yellow
+      const C_GRAY    = '#888888'; // Subdued text
+
+      function renderCanvas(logoObj) {
+        // 1. Dark Gray Background
+        ctx.fillStyle = C_DARK_BG;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Borders & Outer Frame
+        ctx.strokeStyle = C_MINT;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+
+        // Top Banner Box
+        ctx.fillStyle = C_TEAL;
+        ctx.fillRect(25, 25, canvas.width - 50, 110);
+
+        // 3. Header Text
+        ctx.fillStyle = C_GOLD;
+        ctx.font = 'bold 22px monospace';
+        ctx.fillText('AGENCY // FIELD CREDENTIALS', 40, 87);
+
+        // 4. Draw Logo (Source is a verified 1:1 Square)
+        if (logoObj && logoObj.naturalWidth > 0) {
+          try {
+            const logoSize = 80; // 80px by 80px square
+            
+            const xPos = canvas.width - logoSize - 35; // 35px right padding
+            const yPos = 40;                           // Centered in 110px banner
+
+            ctx.drawImage(logoObj, xPos, yPos, logoSize, logoSize);
+          } catch (e) {
+            console.warn("Canvas logo draw skipped:", e);
+          }
+        }
+
+        // Text wrap helper
+        function wrapText(text, x, y, maxWidth, lineHeight) {
+          const words = text.split(' ');
+          let line = '';
+          let lineArray = [];
+          for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            if (metrics.width > maxWidth && n > 0) {
+              lineArray.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+          lineArray.push(line);
+          for (let k = 0; k < lineArray.length; k++) {
+            ctx.fillText(lineArray[k], x, y + k * lineHeight);
+          }
+          return lineArray.length;
+        }
+
+        // 5. Classification — prominent, top of content area
+        let currentY = 178;
+        ctx.fillStyle = C_GOLD;
+        ctx.font = 'bold 26px monospace';
+        const linesUsed = wrapText(trait, 40, currentY, canvas.width - 80, 32);
+        currentY += linesUsed * 32 + 22;
+
+        // 6. Divider line
+        ctx.strokeStyle = C_MINT;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(40, currentY);
+        ctx.lineTo(canvas.width - 40, currentY);
+        ctx.stroke();
+        currentY += 28;
+
+        // 7. Operative Info
+        ctx.fillStyle = C_MINT;
+        ctx.font = '14px monospace';
+        ctx.fillText('ASSIGNED AGENT MODEL:', 40, currentY);
+        currentY += 28;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 20px monospace';
+        ctx.fillText(agentName.toUpperCase(), 40, currentY);
+        currentY += 42;
+
+        ctx.fillStyle = C_MINT;
+        ctx.font = '14px monospace';
+        ctx.fillText('OPERATIVE HANDLE:', 40, currentY);
+        currentY += 28;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 20px monospace';
+        ctx.fillText(`> ${handle}`, 40, currentY);
+        currentY += 55;
+
+        // 8. Manifesto Quote (subdued, near bottom)
+        ctx.fillStyle = C_GRAY;
+        ctx.font = 'italic 12px monospace';
+        ctx.fillText('"Agency is not granted by the platform;', 40, currentY);
+        currentY += 20;
+        ctx.fillText(' it is asserted by the user."', 40, currentY);
+        currentY += 55;
+
+        // 9. Footer / Security Mark
+        ctx.fillStyle = C_GOLD;
+        ctx.font = '12px monospace';
+        ctx.fillText('STATUS: VERIFIED OPERATIVE // DEF CON 34', 40, currentY);
+
+        // 10. Export Canvas to Printable PNG
+        const img = document.getElementById('badgeResult');
+        try {
+          img.src = canvas.toDataURL('image/png');
+          img.style.display = 'block';
+          document.getElementById('saveHint').style.display = 'block';
+        } catch (e) {
+          console.error("Canvas export blocked locally. Works automatically on GitHub Pages!", e);
+        }
+      }
+
+      // Preload fresh Image object in JS to avoid DOM CSS distortion
+      const cleanLogo = new Image();
+      cleanLogo.src = 'dc-34-logo.png';
+      
+      if (cleanLogo.complete) {
+        renderCanvas(cleanLogo);
+      } else {
+        cleanLogo.onload = () => renderCanvas(cleanLogo);
+        cleanLogo.onerror = () => renderCanvas(null);
+      }
+    }
+  </script>
+</body>
+</html>
